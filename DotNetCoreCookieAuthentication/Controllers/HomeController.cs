@@ -20,6 +20,11 @@ namespace DotNetCoreCookieAuthentication.Controllers
         {
             return View();
         }
+        [Authorize(Policy = "PolicyA")]
+        public IActionResult PolicyA()
+        {
+            return View();
+        }
         public IActionResult Authenticate()
         {
             var abcClaims = new List<Claim>()

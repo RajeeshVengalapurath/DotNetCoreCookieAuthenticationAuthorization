@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DotNetCoreCookieAuthentication
@@ -19,8 +21,18 @@ namespace DotNetCoreCookieAuthentication
             services.AddAuthentication("MyCookieAuth")
                 .AddCookie("MyCookieAuth", config => {
                     config.Cookie.Name = "MyCookieAuth";
-                    config.LoginPath = "/Home/Authenticate";
+                    config.LoginPath = "/Home/Authenticate";  //redirect to login page if not authenticated
                 });
+
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy("PolicyA", new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .RequireClaim(ClaimTypes.Email)
+                    .RequireClaim("Something")
+                    .Build());
+            });
+
             services.AddControllersWithViews();
         }
 
