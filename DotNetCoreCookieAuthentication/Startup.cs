@@ -34,6 +34,14 @@ namespace DotNetCoreCookieAuthentication
             });
 
             services.AddControllersWithViews();
+
+            services.AddRazorPages(config =>
+            {
+                config.Conventions.AuthorizePage("/Razor/AuthorizedRazorPage");
+                //config.Conventions.AuthorizePage("/Razor/AuthorizedRazorPage", "PolicyNameHere");
+                //config.Conventions.AuthorizeFolder("/FolderHere");
+                //config.Conventions.AllowAnonymousToPage("/PageHere");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +60,7 @@ namespace DotNetCoreCookieAuthentication
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapRazorPages();
             });
         }
     }
